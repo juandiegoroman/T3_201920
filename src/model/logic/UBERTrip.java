@@ -62,10 +62,48 @@ public class UBERTrip implements Comparable<UBERTrip>
 	@Override
 	public int compareTo(UBERTrip v) {
 
-		return 0;
+        int respuesta;
 
+        if (tiempoPromedio == v.darTiempoPromedio()) {
+
+            respuesta = compararPorDesviacionEstandar(v);
+        }
+
+        else if (tiempoPromedio > v.darTiempoPromedio())
+        {
+            respuesta = 1;
+        }
+
+        else {
+            respuesta = -1;
+        }
+
+        return  respuesta;
 
 	}
+
+    public int compararPorDesviacionEstandar(UBERTrip v) {
+
+        int respuesta;
+
+        if (desviacionEstandar == v.darDesviacionEstandar()) {
+
+            respuesta = 0;
+        }
+
+        else if (desviacionEstandar > v.darDesviacionEstandar())
+        {
+            respuesta = 1;
+        }
+
+        else {
+            respuesta = -1;
+        }
+
+        return  respuesta;
+
+    }
+
 
 	   public String toString(){
 
