@@ -23,7 +23,7 @@ public class MVCModelo {
      */
 
     private Cola<UBERTrip> datosCola;
-
+    
     /**
      * Constructor del modelo del mundo con capacidad predefinida
      */
@@ -63,9 +63,10 @@ public class MVCModelo {
 
         }
         return mayor;
-    }
-
-
+    }   
+  
+    
+  
     public void cargarDatos(String ruta) {
         CSVReader reader = null;
         try {
