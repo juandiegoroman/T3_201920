@@ -22,7 +22,6 @@ public  class ArregloDinamico<T extends Comparable<T>> implements IArregloDinami
 	 * Arreglo de elementos de tamaNo maximo
 	 */
 	private T[] elementos;
-	private LinkedList;
 
 	/**
 	 * Construir un arreglo con la capacidad maxima inicial.

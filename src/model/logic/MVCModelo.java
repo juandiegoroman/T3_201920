@@ -1,6 +1,7 @@
 package model.logic;
 
 
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import com.opencsv.CSVReader;
 
 import controller.Controller;
 import model.data_structures.Cola;
-import model.data_structures.Pila;
+
 
 
 /**
@@ -20,7 +21,6 @@ public class MVCModelo {
     /**
      * Atributos del modelo del mundo
      */
-    private Pila<UBERTrip> datosPila;
 
     private Cola<UBERTrip> datosCola;
 
@@ -28,8 +28,7 @@ public class MVCModelo {
      * Constructor del modelo del mundo con capacidad predefinida
      */
     public MVCModelo() {
-        datosPila = new Pila();
-        datosCola = new Cola();
+               datosCola = new Cola();
     }
 
     /**
@@ -64,22 +63,6 @@ public class MVCModelo {
 
         }
         return mayor;
-    }
-
-    public Cola<UBERTrip> ultimosViajesHoraDada(int n, int hora) {
-        int cantidad = 0;
-        Cola<UBERTrip> ultimos = new Cola<>();
-        while (datosPila.tamano() > 0 && cantidad <= n) {
-
-           UBERTrip temp = datosPila.sacar();
-
-            if (temp.darHora() == hora) {
-                ultimos.enqueu(temp);
-                cantidad++;
-            }
-        }
-        return ultimos;
-
     }
 
 
@@ -122,16 +105,11 @@ public class MVCModelo {
      * @param dato
      */
     public void agregar(UBERTrip dato) {
-        datosPila.agregar(dato);
         datosCola.enqueu(dato);
     }
 
     public UBERTrip crearViaje(String[] datos) {
         return new UBERTrip(Integer.valueOf(datos[0]), Integer.valueOf(datos[1]), Integer.valueOf(datos[2]), Double.valueOf(datos[3]), Double.valueOf(datos[4]), Double.valueOf(datos[5]), Double.valueOf(datos[6]));
-    }
-
-    public Pila<UBERTrip> darDatosPila() {
-        return datosPila;
     }
 
     public Cola<UBERTrip> darDatosCola() {
@@ -142,7 +120,6 @@ public class MVCModelo {
     {
         MVCModelo m = new MVCModelo();
         m.cargarDatos(Controller.DATOS_PRIMER_SEMESTRE);
-        m.ultimosViajesHoraDada(3,2);
     }
 
 }
