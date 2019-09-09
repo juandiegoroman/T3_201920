@@ -10,7 +10,6 @@ import com.opencsv.CSVReader;
 
 import controller.Controller;
 import model.data_structures.Cola;
-import model.data_structures.IColaIterador;
 import model.data_structures.Pila;
 
 
@@ -21,9 +20,9 @@ public class MVCModelo {
     /**
      * Atributos del modelo del mundo
      */
-    private Pila<Viaje> datosPila;
+    private Pila<UBERTrip> datosPila;
 
-    private Cola<Viaje> datosCola;
+    private Cola<UBERTrip> datosCola;
 
     /**
      * Constructor del modelo del mundo con capacidad predefinida
@@ -40,9 +39,9 @@ public class MVCModelo {
      */
 
 
-    public Cola<Viaje> clusterMayor(int hora) {
-        Cola<Viaje> temp = new Cola<>();
-        Cola<Viaje> mayor = new Cola<>();
+    public Cola<UBERTrip> clusterMayor(int hora) {
+        Cola<UBERTrip> temp = new Cola<>();
+        Cola<UBERTrip> mayor = new Cola<>();
 
         while (datosCola.tamano() > 0) {
             if (datosCola.darPrimero().valor().darHora() < hora) {
@@ -67,12 +66,12 @@ public class MVCModelo {
         return mayor;
     }
 
-    public Cola<Viaje> ultimosViajesHoraDada(int n, int hora) {
+    public Cola<UBERTrip> ultimosViajesHoraDada(int n, int hora) {
         int cantidad = 0;
-        Cola<Viaje> ultimos = new Cola<>();
+        Cola<UBERTrip> ultimos = new Cola<>();
         while (datosPila.tamano() > 0 && cantidad <= n) {
 
-           Viaje temp = datosPila.sacar();
+           UBERTrip temp = datosPila.sacar();
 
             if (temp.darHora() == hora) {
                 ultimos.enqueu(temp);
@@ -98,7 +97,7 @@ public class MVCModelo {
 
                 String[] parametros = (String[]) iter.next();
 
-                Viaje v = crearViaje(parametros);
+                UBERTrip v = crearViaje(parametros);
 
                 agregar(v);
             }
@@ -122,20 +121,20 @@ public class MVCModelo {
      *
      * @param dato
      */
-    public void agregar(Viaje dato) {
+    public void agregar(UBERTrip dato) {
         datosPila.agregar(dato);
         datosCola.enqueu(dato);
     }
 
-    public Viaje crearViaje(String[] datos) {
-        return new Viaje(Integer.valueOf(datos[0]), Integer.valueOf(datos[1]), Integer.valueOf(datos[2]), Double.valueOf(datos[3]), Double.valueOf(datos[4]), Double.valueOf(datos[5]), Double.valueOf(datos[6]));
+    public UBERTrip crearViaje(String[] datos) {
+        return new UBERTrip(Integer.valueOf(datos[0]), Integer.valueOf(datos[1]), Integer.valueOf(datos[2]), Double.valueOf(datos[3]), Double.valueOf(datos[4]), Double.valueOf(datos[5]), Double.valueOf(datos[6]));
     }
 
-    public Pila<Viaje> darDatosPila() {
+    public Pila<UBERTrip> darDatosPila() {
         return datosPila;
     }
 
-    public Cola<Viaje> darDatosCola() {
+    public Cola<UBERTrip> darDatosCola() {
         return datosCola;
     }
 

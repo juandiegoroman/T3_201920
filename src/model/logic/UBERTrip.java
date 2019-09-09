@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Viaje implements Comparable<Viaje>
+public class UBERTrip implements Comparable<UBERTrip>
 {
 
 	private int idOrigen;
@@ -17,7 +17,7 @@ public class Viaje implements Comparable<Viaje>
 
     private double desviacionGeometrica;
 
-    public Viaje(int idOrigen, int idDestino, int hora, double tiempoPromedio, double desviacionEstandar, double promedioGeometrico, double desviacionGeometrica) {
+    public UBERTrip(int idOrigen, int idDestino, int hora, double tiempoPromedio, double desviacionEstandar, double promedioGeometrico, double desviacionGeometrica) {
         this.idOrigen = idOrigen;
         this.idDestino = idDestino;
         this.hora = hora;
@@ -60,9 +60,11 @@ public class Viaje implements Comparable<Viaje>
 	
 	
 	@Override
-	public int compareTo(Viaje v) {
+	public int compareTo(UBERTrip v) {
 
 		return 0;
+
+
 	}
 
 	   public String toString(){
