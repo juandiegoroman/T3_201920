@@ -1,33 +1,30 @@
 package model.logic;
 
 
+import com.opencsv.CSVReader;
+import controller.Controller;
+import model.data_structures.Cola;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 
-import com.opencsv.CSVReader;
-
-import controller.Controller;
-import model.data_structures.Cola;
-
-
 
 /**
  * Definicion del modelo del mundo
  */
-public class MVCModelo {
+public class MVCModelo2 {
     /**
      * Atributos del modelo del mundo
      */
 
     private Cola<UBERTrip> datosCola;
-    
+
     /**
      * Constructor del modelo del mundo con capacidad predefinida
      */
-    public MVCModelo() {
+    public MVCModelo2() {
                datosCola = new Cola();
     }
 
@@ -63,10 +60,9 @@ public class MVCModelo {
 
         }
         return mayor;
-    }   
-  
-    
-  
+    }
+
+
     public void cargarDatos(String ruta) {
         CSVReader reader = null;
         try {
@@ -98,6 +94,8 @@ public class MVCModelo {
             }
 
         }
+
+
     }
 
 
@@ -123,7 +121,7 @@ public class MVCModelo {
 
     public static void main(String[] args)
     {
-        MVCModelo m = new MVCModelo();
+        MVCModelo2 m = new MVCModelo2();
         m.cargarDatos(Controller.DATOS_PRIMER_SEMESTRE);
     }
 

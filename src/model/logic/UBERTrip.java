@@ -1,6 +1,8 @@
 package model.logic;
 
-public class UBERTrip implements Comparable<UBERTrip>
+import model.data_structures.IComparable;
+
+public class UBERTrip implements IComparable<UBERTrip>
 {
 
 	private int idOrigen;
