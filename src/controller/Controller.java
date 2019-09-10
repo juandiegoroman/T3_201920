@@ -2,15 +2,15 @@ package controller;
 
 import java.util.Scanner;
 
-import model.data_structures.Cola;
-import model.data_structures.IColaIterador;
+import model.data_structures.IComparable;
+import model.data_structures.IListaIterador;
 import model.logic.MVCModelo;
-import model.logic.Viaje;
+import model.logic.UBERTrip;
 import view.MVCView;
 
 public class Controller {
 
-        public final static String DATOS_PRIMER_SEMESTRE = "./data/bogota-cadastral-2018-1-All-HourlyAggregate.csv";
+    public final static String DATOS_PRIMER_SEMESTRE = "./data/bogota-cadastral-2018-2-All-HourlyAggregate.csv";
 
 
     /* Instancia del Modelo*/
@@ -21,8 +21,6 @@ public class Controller {
 
     /**
      * Crear la vista y el modelo del proyecto
-     *
-     * @param capacidad tamaNo inicial del arreglo
      */
     public Controller() {
         view = new MVCView();
@@ -32,11 +30,9 @@ public class Controller {
     public void run() {
         Scanner lector = new Scanner(System.in);
         boolean fin = false;
-        String dato = "";
-        String respuesta = "";
+
 
         int horaConsulta = -1;
-        int nViajes = -1;
 
         while (!fin) {
             view.printMenu();
@@ -46,11 +42,11 @@ public class Controller {
                 case 1:
                     modelo.cargarDatos(DATOS_PRIMER_SEMESTRE);
 
-                    System.out.println("Para el primer semestre del 2018 se leyeron las siguientes cantidades de viajes por hora: " + modelo.darDatosCola().tamano());
+                    System.out.println("Para el primer semestre del 2018 se leyeron las siguientes cantidades de viajes por hora: " + modelo.darDatos().tamano());
                     System.out.println();
-                    System.out.println("Primer viaje: Origen: " + modelo.darDatosCola().darPrimero().valor().darIdOrigen() + ", Destino: " + modelo.darDatosCola().darPrimero().valor().darIdDestino() + ", Hora: " + modelo.darDatosCola().darPrimero().valor().darHora() + ", Tiempo promedio: " + modelo.darDatosCola().darPrimero().valor().darTiempoPromedio());
+                    System.out.println("Primer viaje: Origen: " + modelo.darDatos().primero().darIdOrigen() + ", Destino: " + modelo.darDatos().primero().darIdDestino() + ", Hora: " + modelo.darDatos().primero().darHora() + ", Tiempo promedio: " + modelo.darDatos().primero().darTiempoPromedio());
                     System.out.println();
-                    System.out.println("Ultimo viaje: Origen: " + modelo.darDatosCola().darUltimo().valor().darIdOrigen() + ", Destino: " + modelo.darDatosCola().darUltimo().valor().darIdDestino() + ", Hora: " + modelo.darDatosCola().darUltimo().valor().darHora() + ", Tiempo promedio: " + modelo.darDatosCola().darUltimo().valor().darTiempoPromedio());
+                    System.out.println("Ultimo viaje: Origen: " + modelo.darDatos().ultimo().darIdOrigen() + ", Destino: " + modelo.darDatos().ultimo().darIdDestino() + ", Hora: " + modelo.darDatos().ultimo().darHora() + ", Tiempo promedio: " + modelo.darDatos().ultimo().darTiempoPromedio());
                     System.out.println();
                     break;
 
@@ -66,17 +62,9 @@ public class Controller {
                             System.out.println("Debe ingresar un numero");
                         }
 
-                        Cola<Viaje> cola = modelo.clusterMayor(horaConsulta);
+                        System.out.println("Se hallaron " + modelo.viajesPorHora(horaConsulta).length + " viajes para la hora seleccionada.");
 
-                        System.out.println("La cantidad de viajes del grupo resultante es: " + cola.tamano() + "\n");
 
-                        IColaIterador<Viaje> iter = cola.iterador();
-
-                        if (cola.tamano() == 0) {
-                            System.out.println("No se encontraron resultados con los par�metros dados. \n");
-                        } else {
-                            printList(iter);
-                        }
                     } catch (Exception e) {
 
                         e.printStackTrace();
@@ -86,42 +74,73 @@ public class Controller {
                     break;
 
                 case 3:
-                    try {
 
-                        System.out.println("--------- \nIngresar el n�mero de viajes de consulta: ");
+                    if (horaConsulta == -1) {
+                        System.out.println("Debe ingresar una hora de consulta.");
 
-                        try {
-                            nViajes = lector.nextInt();
-                        } catch (Exception e) {
-                            System.out.println("Debe ingresar un numero");
-                        }
+                        break;
 
-                        System.out.println("--------- \nIngresar el n�mero de la hora de consulta: ");
-
-                        try {
-                            horaConsulta = lector.nextInt();
-                        } catch (Exception e) {
-                            System.out.println("Debe ingresar un numero");
-                        }
-
-
-                        Cola<Viaje> cola = modelo.ultimosViajesHoraDada(nViajes, horaConsulta);
-
-                        System.out.println("La cantidad de viajes del grupo resultante es: " + cola.tamano() + "\n");
-
-                        IColaIterador<Viaje> iter = cola.iterador();
-
-                        if (cola.tamano() == 0) {
-                            System.out.println("No se encontraron resultados. \n");
-                        } else {
-                            printList(iter);
-                        }
-
-                    } catch (Exception e) {
-                        System.out.print("No se han cargado los datos.\n");
-                        e.printStackTrace();
                     }
 
+                    IComparable[] arr = modelo.viajesPorHora(horaConsulta);
+
+                    System.out.println("El algoritmo QuickSort se tardo : " + modelo.duracionQuickSort(arr) + " segundos. \n");
+
+                    System.out.println("Estos son los primeros diez viajes resultados del ordenamiento QuickSort: \n");
+                    printList(modelo.darPrimerosDiezViajes(arr).iterador());
+                    System.out.println();
+
+                    System.out.println("Estos son los ultimos diez viajes resultados del ordenamiento QuickSort: \n");
+                    printList(modelo.darUltimosDiezViajes(arr).iterador());
+                    System.out.println();
+
+                    break;
+
+                case 4:
+
+
+                    if (horaConsulta == -1) {
+                        System.out.println("Debe ingresar una hora de consulta.");
+
+                        break;
+
+                    }
+
+                    arr = modelo.viajesPorHora(horaConsulta);
+
+                    System.out.println("El algoritmo MergeSort se tardo : " + modelo.duracionMErgeSort(arr) + " segundos. \n");
+
+                    System.out.println("Estos son los primeros diez viajes resultados del ordenamiento MergeSort: \n");
+                    printList(modelo.darPrimerosDiezViajes(arr).iterador());
+                    System.out.println();
+
+                    System.out.println("Estos son los ultimos diez viajes resultados del ordenamiento MergeSort: \n");
+                    printList(modelo.darUltimosDiezViajes(arr).iterador());
+                    System.out.println();
+
+                    break;
+
+
+                case 5:
+
+                    if (horaConsulta == -1) {
+                        System.out.println("Debe ingresar una hora de consulta.");
+
+                        break;
+
+                    }
+
+                    arr = modelo.viajesPorHora(horaConsulta);
+
+                    System.out.println("El algoritmo ShellSort se tardo : " + modelo.duracionShellSort(arr) + " segundos. \n");
+
+                    System.out.println("Estos son los primeros diez viajes resultados del ordenamiento ShellSort: \n");
+                    printList(modelo.darPrimerosDiezViajes(arr).iterador());
+                    System.out.println();
+
+                    System.out.println("Estos son los ultimos diez viajes resultados del ordenamiento ShellSort: \n");
+                    printList(modelo.darUltimosDiezViajes(arr).iterador());
+                    System.out.println();
                     break;
 
                 default:
@@ -132,8 +151,8 @@ public class Controller {
 
     }
 
-    private void printList(IColaIterador<Viaje> iter) {
-        Viaje actual;
+    private void printList(IListaIterador<UBERTrip> iter) {
+        UBERTrip actual;
         System.out.println("-----------------------------------------------------------------------------");
         System.out.printf("%10s %10s  %20s  %20s", "Hora", "Origen", "Destino", "Tiempo promedio");
         System.out.println();
