@@ -128,7 +128,7 @@ public class MVCModelo {
         public double duracion()
         {
             long actual = System.currentTimeMillis();
-            return (actual - inicio) / 1000.0;
+            return (actual - inicio) ;
         }
     }
 
