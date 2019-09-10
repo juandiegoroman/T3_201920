@@ -15,8 +15,10 @@ public class MVCView
 		public void printMenu()
 		{
 			System.out.println("1. Cargar los viajes agregados por hora de el primer semestre");
-			System.out.println("2. Ingresar una hora para obterner el grupo de viajes consecutivo mas grande");
-			System.out.println("3. Ingrese una hora para obtener una N cantidad de viajes con dicha hora");
+			System.out.println("2. Ingresar una hora de consulta");
+			System.out.println("3. Ordenar datos de viajes de consulta por QuickSort: ");
+			System.out.println("4. Ordenar datos de viajes de consulta por MergeSort: ");
+			System.out.println("5. Ordenar datos de viajes de consulta por ShellSort: \n");
 		}
 		public void printMessage(String mensaje) {
 
