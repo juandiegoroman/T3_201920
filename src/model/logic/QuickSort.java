@@ -1,4 +1,6 @@
-package model.data_structures;
+package model.logic;
+
+import model.data_structures.IComparable;
 
 import java.util.Random;
 
@@ -40,21 +42,21 @@ public class QuickSort {
     }
 
     private static boolean esMenor(IComparable elemento1, IComparable elemento2){
-        return elemento1.compareTo(elemento2) < 0;
+        return elemento1.compararCon(elemento2) < 0;
     }
 
 
-    private static void ordenar(IComparable[] arr, int inf, int sup) {
+    private static void ordenarAux(IComparable[] arr, int inf, int sup) {
         if (inf < sup) {
             int pi = dividir(arr, inf, sup);
-            ordenar(arr, inf, pi - 1);
-            ordenar(arr, pi + 1, sup);
+            ordenarAux(arr, inf, pi - 1);
+            ordenarAux(arr, pi + 1, sup);
         }
 
     }
 
-    public static void quickSort(IComparable[] arr){
+    public static void ordenar(IComparable[] arr){
         mezclar(arr);
-        ordenar(arr, 0, arr.length -1);
+        ordenarAux(arr, 0, arr.length -1);
     }
 }

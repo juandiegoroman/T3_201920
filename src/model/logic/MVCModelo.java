@@ -1,5 +1,10 @@
 package model.logic;
 
+import com.opencsv.CSVReader;
+
+import model.data_structures.IComparable;
+import model.data_structures.IListaIterador;
+import model.data_structures.ListaEncadenada;
 
 
 import java.io.FileNotFoundException;
@@ -7,67 +12,80 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 
-import com.opencsv.CSVReader;
-
-import controller.Controller;
-import model.data_structures.Cola;
-
-
-
 /**
  * Definicion del modelo del mundo
+ *
  */
 public class MVCModelo {
     /**
      * Atributos del modelo del mundo
      */
+    private ListaEncadenada<UBERTrip> datos;
 
-    private Cola<UBERTrip> datosCola;
-    
     /**
      * Constructor del modelo del mundo con capacidad predefinida
      */
-    public MVCModelo() {
-               datosCola = new Cola();
+    public MVCModelo()
+    {
+        datos = new ListaEncadenada();
     }
 
-    /**
-     * Constructor del modelo del mundo con capacidad dada
-     *
-     * @param tamano
-     */
+    public int totalViajesReportados()
+    {
+        return datos.tamano();
+    }
 
 
-    public Cola<UBERTrip> clusterMayor(int hora) {
-        Cola<UBERTrip> temp = new Cola<>();
-        Cola<UBERTrip> mayor = new Cola<>();
+    public IComparable[] viajesPorHora(int hora)
+    {
 
-        while (datosCola.tamano() > 0) {
-            if (datosCola.darPrimero().valor().darHora() < hora) {
-                datosCola.dequeue();
+        IListaIterador<UBERTrip> iter = datos.iterador();
 
-            } else {
+        ListaEncadenada<UBERTrip> lista = new ListaEncadenada();
 
-                temp.enqueu(datosCola.dequeue());
-
-                while (datosCola.tamano() > 0 && temp.darUltimo().valor().darHora() < datosCola.darPrimero().valor().darHora()) {
-
-                    temp.enqueu(datosCola.dequeue());
-                }
-
-                if (temp.tamano() > mayor.tamano()) {
-                    mayor = temp;
-                }
-
+        while(iter.haySiguiente())
+        {
+            UBERTrip actual = iter.siguiente();
+            if (actual.darHora() == hora){
+                lista.insertarFinal(actual);
             }
-
         }
-        return mayor;
-    }   
-  
-    
-  
-    public void cargarDatos(String ruta) {
+
+        IComparable[] arr = convertirAArreglo(lista);
+
+        return arr;
+    }
+
+    private IComparable[] convertirAArreglo(ListaEncadenada<UBERTrip> lista) {
+
+        IComparable[] arr = new IComparable[lista.tamano()];
+
+        int cont = 0;
+
+        IListaIterador<UBERTrip> iter = lista.iterador();
+
+        while(iter.haySiguiente())
+        {
+            IComparable actual = iter.siguiente();
+            arr[cont] = (IComparable) actual;
+            cont++;
+        }
+        return arr;
+    }
+
+
+    /**
+     * Requerimiento de agregar dato
+     * @param dato
+     */
+    public void agregar(UBERTrip dato)
+    {
+        datos.insertarFinal(dato);
+    }
+
+
+
+    public void cargarDatos(String ruta){
         CSVReader reader = null;
         try {
 
@@ -77,7 +95,7 @@ public class MVCModelo {
 
             iter.next();
 
-            while (iter.hasNext()) {
+            while (iter.hasNext()){
 
                 String[] parametros = (String[]) iter.next();
 
@@ -86,9 +104,10 @@ public class MVCModelo {
                 agregar(v);
             }
 
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally {
+        } finally{
             if (reader != null) {
                 try {
                     reader.close();
@@ -101,30 +120,87 @@ public class MVCModelo {
     }
 
 
-
-
-
-    /**
-     * Requerimiento de agregar dato
-     *
-     * @param dato
-     */
-    public void agregar(UBERTrip dato) {
-        datosCola.enqueu(dato);
-    }
-
-    public UBERTrip crearViaje(String[] datos) {
-        return new UBERTrip(Integer.valueOf(datos[0]), Integer.valueOf(datos[1]), Integer.valueOf(datos[2]), Double.valueOf(datos[3]), Double.valueOf(datos[4]), Double.valueOf(datos[5]), Double.valueOf(datos[6]));
-    }
-
-    public Cola<UBERTrip> darDatosCola() {
-        return datosCola;
-    }
-
-    public static void main(String[] args)
+    public class Contador
     {
-        MVCModelo m = new MVCModelo();
-        m.cargarDatos(Controller.DATOS_PRIMER_SEMESTRE);
+        private final long inicio;
+        public Contador()
+        { inicio = System.currentTimeMillis(); }
+        public double duracion()
+        {
+            long actual = System.currentTimeMillis();
+            return (actual - inicio) / 1000.0;
+        }
     }
 
+    public ListaEncadenada<UBERTrip> darPrimerosDiezViajes(IComparable[] arr){
+
+        ListaEncadenada<UBERTrip> lista = new ListaEncadenada<>();
+        if (arr.length <= 10) {
+            return lista.clonar(arr);
+        }
+        else {
+
+            for (int i = 0; i < 10; i++) {
+                lista.insertarFinal((UBERTrip) arr[i]);
+            }
+        }
+
+        return lista;
+    }
+
+    public ListaEncadenada<UBERTrip> darUltimosDiezViajes(IComparable[] arr){
+
+        ListaEncadenada<UBERTrip> lista = new ListaEncadenada<>();
+        if (arr.length <= 10) {
+            return lista.clonar(arr);
+        }
+        else {
+
+            for (int i = 0; i < 10; i++) {
+                lista.insertarPrimero((UBERTrip) arr[arr.length - 1 - i]);
+            }
+        }
+        return lista;
+    }
+
+
+    public double duracionQuickSort(IComparable[] arr){
+
+        Contador cont = new Contador();
+
+        QuickSort.ordenar(arr);
+
+        return cont.duracion();
+    }
+
+    public double duracionMErgeSort(IComparable[] arr){
+
+        Contador cont = new Contador();
+
+        MergeSort.ordenar(arr);
+
+        return cont.duracion();
+    }
+
+    public double duracionShellSort(IComparable[] arr){
+
+        Contador cont = new Contador();
+
+        ShellSort.ordenar(arr);
+
+        return cont.duracion();
+    }
+
+
+
+
+    public UBERTrip crearViaje(String[] datos ){
+
+        return new UBERTrip(Integer.valueOf(datos[0]), Integer.valueOf(datos[1]),Integer.valueOf(datos[2]), Double.valueOf(datos[3]),Double.valueOf(datos[4]), Double.valueOf(datos[5]), Double.valueOf(datos[6]));
+
+    }
+
+    public ListaEncadenada<UBERTrip> darDatos() {
+        return datos;
+    }
 }

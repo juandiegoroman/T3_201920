@@ -62,7 +62,7 @@ public class UBERTrip implements IComparable<UBERTrip>
 	
 	
 	@Override
-	public int compareTo(UBERTrip v) {
+	public int compararCon(UBERTrip v) {
 
         int respuesta;
 

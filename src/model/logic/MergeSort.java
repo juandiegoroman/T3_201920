@@ -1,77 +1,43 @@
 package model.logic;
 
-public class MergeSort 
-{
-	public static void merge(int arr[], int l, int m, int r) 
-    { 
-  
-        int n1 = m - l + 1; 
-        int n2 = r - m; 
-  
-      
-        int L[] = new int [n1]; 
-        int R[] = new int [n2]; 
-  
-        for (int i=0; i<n1; ++i) 
-            L[i] = arr[l + i]; 
-        for (int j=0; j<n2; ++j) 
-            R[j] = arr[m + 1+ j]; 
-  
-  
-      
-  
-      
-        int i = 0, j = 0; 
-  
-       
-        int k = l; 
-        while (i < n1 && j < n2) 
-        { 
-            if (L[i] <= R[j]) 
-            { 
-                arr[k] = L[i]; 
-                i++; 
-            } 
-            else
-            { 
-                arr[k] = R[j]; 
-                j++; 
-            } 
-            k++; 
-        } 
-  
-      
-        while (i < n1) 
-        { 
-            arr[k] = L[i]; 
-            i++; 
-            k++; 
-        } 
-  
-       
-        while (j < n2) 
-        { 
-            arr[k] = R[j]; 
-            j++; 
-            k++; 
-        } 
-    } 
-  
-    // Main function that sorts arr[l..r] using 
-    // merge() 
-    void sort(int arr[], int l, int r) 
-    { 
-        if (l < r) 
-        { 
-           
-            int m = (l+r)/2; 
-  
-            
-            sort(arr, l, m); 
-            sort(arr , m+1, r); 
-  
-            
-            merge(arr, l, m, r); 
-        } 
-    } 
+import model.data_structures.IComparable;
+
+public class MergeSort {
+    private static IComparable[] aux;
+
+    public static void ordenar(IComparable[] a)
+    {
+        aux = new IComparable[a.length];
+        ordenar(a, 0, a.length - 1);
+    }
+
+    public static void unir(IComparable[] a, int inf, int med, int sup)
+    {
+        int i = inf, j = med+1;
+
+        for (int k = inf; k <= sup; k++) aux[k] = a[k];
+
+        for (int k = inf; k <= sup; k++) {
+
+            if (i > med) a[k] = aux[j++];
+
+            else if (j > sup) a[k] = aux[i++];
+
+            else if (esMenor(aux[j], aux[i])) a[k] = aux[j++];
+
+            else a[k] = aux[i++];
+        }
+    }
+
+    private static boolean esMenor(IComparable v, IComparable w)
+    { return v.compararCon(w) < 0; }
+
+    private static void ordenar(IComparable[] a, int inf, int sup)
+    {
+        if (sup <= inf) return;
+        int mid = inf + (sup - inf)/2;
+        ordenar(a, inf, mid);
+        ordenar(a, mid+1, sup);
+        unir(a, inf, mid, sup);
+    }
 }
