@@ -173,7 +173,7 @@ public class MVCModelo {
         return cont.duracion();
     }
 
-    public double duracionMErgeSort(IComparable[] arr){
+    public double duracionMergeSort(IComparable[] arr){
 
         Contador cont = new Contador();
 
