@@ -42,7 +42,7 @@ public class Controller {
                 case 1:
                     modelo.cargarDatos(DATOS_PRIMER_SEMESTRE);
 
-                    System.out.println("Para el primer semestre del 2018 se leyeron las siguientes cantidades de viajes por hora: " + modelo.darDatos().tamano());
+                    System.out.println("Para el segundo semestre del 2018 se leyeron las siguientes cantidades de viajes por hora: " + modelo.darDatos().tamano());
                     System.out.println();
                     System.out.println("Primer viaje: Origen: " + modelo.darDatos().primero().darIdOrigen() + ", Destino: " + modelo.darDatos().primero().darIdDestino() + ", Hora: " + modelo.darDatos().primero().darHora() + ", Tiempo promedio: " + modelo.darDatos().primero().darTiempoPromedio());
                     System.out.println();
@@ -54,7 +54,7 @@ public class Controller {
                 case 2:
                     try {
 
-                        System.out.println(" \n Ingresar el número de la hora de consulta: \\n");
+                        System.out.println(" \n Ingresar el número de la hora de consulta: \n");
 
                         try {
                             horaConsulta = lector.nextInt();
@@ -62,7 +62,7 @@ public class Controller {
                             System.out.println("Debe ingresar un número");
                         }
 
-                        System.out.println("Se hallaron " + modelo.viajesPorHora(horaConsulta).length + " viajes para la hora seleccionada.");
+                        System.out.println("Se hallaron " + modelo.viajesPorHora(horaConsulta).length + " viajes para la hora seleccionada.\n");
 
 
                     } catch (Exception e) {
@@ -108,7 +108,7 @@ public class Controller {
 
                     arr = modelo.viajesPorHora(horaConsulta);
 
-                    System.out.println("El algoritmo MergeSort se tardó : " + modelo.duracionMErgeSort(arr) + " milisegundos. \n");
+                    System.out.println("El algoritmo MergeSort se tardó : " + modelo.duracionMergeSort(arr) + " milisegundos. \n");
 
                     System.out.println("Estos son los primeros diez viajes resultados del ordenamiento MergeSort: \n");
                     printList(modelo.darPrimerosDiezViajes(arr).iterador());
