@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * @author Fernando De la Rosa
  *
  */
-public  class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamico<T>{
+public  class ArregloDinamico<T extends IComparable<T>> implements IArregloDinamico<T>{
 	/**
 	 * Capacidad maxima del arreglo
 	 */
