@@ -86,6 +86,9 @@ public class MVCModelo {
 
 
     public void cargarDatos(String ruta){
+    	
+    	datos = new ListaEncadenada<UBERTrip>();
+    	
         CSVReader reader = null;
         try {
 
